@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Andreas Follmann"]
   #s.email       = [""]
-  #s.homepage    = "https://github.com/tdreyno/middleman-smusher"
+  s.homepage    = "https://github.com/follmann/favicon_maker"
   s.summary     = %q{Create favicon files in various sizes from a base image}
   s.description = %q{Create favicon files in various sizes from a base image}
 
