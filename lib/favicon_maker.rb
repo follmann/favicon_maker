@@ -3,7 +3,6 @@ module FaviconMaker
   require 'fileutils'
   
   class Generator
-    VERSION = "0.0.1"
     
     ICON_VERSIONS = {
       :apple_114 => {:filename => "apple-touch-icon-114x114-precomposed.png", :dimensions => "114x114", :format => "png"},
