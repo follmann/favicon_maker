@@ -1,7 +1,9 @@
 FaviconMaker
 ============
 
-FaviconMaker aims to ease the tedious process of creating multiple versions of your favicon in different sizes and formats.
+Tired of creating a gazillion different favicons to satisfy all kinds of devices and resolutions in different file formats? 
+
+I know I was, so I created FaviconMaker to ease the tedious process of creating multiple versions of your favicon.
 
 The basic idea is to have one image file as source for all the different sizes and or formats (png/ico). If the input folder contains a precomposed file like a visually improved version of the 16x16 favicon.ico this file version will not be generated but the file optionally be copied to the output folder. The remaining versions will still be sourced from the input image defined.
 
@@ -40,7 +42,7 @@ Uses the following defaults:
     }
 
 ### Advanced 
-(attempted Rails integration, could be used in a Rake task or Capistrano recipe)
+(untested attempted Rails integration, using all available options. Could be used in a Rake task or Capistrano recipe)
 
     options = {
       :versions => [:apple_114, :apple_57, :apple, :fav_png, :fav_ico],
