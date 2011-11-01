@@ -46,7 +46,7 @@ Uses the following defaults:
 
     options = {
       :versions => [:apple_114, :apple_57, :apple, :fav_png, :fav_ico],
-      :custom_versions => {:apple_extreme_retina => {:filename => "apple-touch-icon-228x228-precomposed.png", :dimensions => "228x228", :format => "png"}}
+      :custom_versions => {:apple_extreme_retina => {:filename => "apple-touch-icon-228x228-precomposed.png", :dimensions => "228x228", :format => "png"}},
       :root_dir => Rails.root,
       :input_dir => File.join(Rails.root, "app", "assets", "public"),
       :base_image => "favico.png",
