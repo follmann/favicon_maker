@@ -6,13 +6,13 @@ module FaviconMaker
     VERSION = "0.0.1"
     
     ICON_VERSIONS = {
-      :apple_114 => ["apple-touch-icon-114x114-precomposed.png", "114x114", "png"],
-      :apple_72 => ["apple-touch-icon-72x72-precomposed.png", "72x72", "png"],
-      :apple_57 => ["apple-touch-icon-57x57-precomposed.png", "57x57", "png"],
-      :apple_pre => ["apple-touch-icon-precomposed.png", "57x57", "png"],
-      :apple => ["apple-touch-icon.png", "57x57", "png"],
-      :fav_png => ["favicon.png", "16x16", "png"],
-      :fav_ico => ["favicon.ico", "16x16", "ico"]
+      :apple_114 => {:filename => "apple-touch-icon-114x114-precomposed.png", :dimensions => "114x114", :format => "png"},
+      :apple_72 => {:filename => "apple-touch-icon-72x72-precomposed.png", :dimensions => "72x72", :format => "png"},
+      :apple_57 => {:filename => "apple-touch-icon-57x57-precomposed.png", :dimensions => "57x57", :format => "png"},
+      :apple_pre => {:filename => "apple-touch-icon-precomposed.png", :dimensions => "57x57", :format => "png"},
+      :apple => {:filename => "apple-touch-icon.png", :dimensions => "57x57", :format => "png"},
+      :fav_png => {:filename => "favicon.png", :dimensions => "16x16", :format => "png"},
+      :fav_ico => {:filename => "favicon.ico", :dimensions => "16x16", :format => "ico"}
     }
     
     class << self
@@ -20,6 +20,7 @@ module FaviconMaker
       def create_versions(options={}, &block)
         options = {
           :versions => ICON_VERSIONS.keys,
+          :custom_versions => {},
           :root_dir => File.dirname(__FILE__),
           :input_dir => "favicons",
           :base_image => "favicon_base.png",
@@ -30,12 +31,12 @@ module FaviconMaker
         raise ArgumentError unless options[:versions].is_a? Array
         base_path = File.join(options[:root_dir], options[:input_dir])
         input_path = File.join(base_path, options[:base_image])
-      
-        options[:versions].each do |version|
-          version = ICON_VERSIONS[version]
-          filename = version[0]
-          composed_path = File.join(base_path, filename)
-          output_path = File.join(options[:root_dir], options[:output_dir], filename)
+        
+        icon_versions = ICON_VERSIONS.merge(options[:custom_versions])
+        (options[:versions] + options[:custom_versions].keys).uniq.each do |version|
+          version = icon_versions[version]
+          composed_path = File.join(base_path, version[:filename])
+          output_path = File.join(options[:root_dir], options[:output_dir], version[:filename])
         
           created = false
           # check for self composed icon file
@@ -46,8 +47,8 @@ module FaviconMaker
             end
           else
             image = MiniMagick::Image.open(input_path)
-            image.resize version[1]
-            image.format version[2]
+            image.resize version[:dimensions]
+            image.format version[:format]
             image.write output_path
             created = true
           end

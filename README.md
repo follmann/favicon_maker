@@ -31,6 +31,7 @@ Uses the following defaults:
 
     options = {
       :versions => [:apple_114, :apple_72, :apple_57, :apple_pre, :apple, :fav_png, :fav_ico],
+      :custom_versions => {},
       :root_dir => File.dirname(__FILE__),
       :input_dir => "favicons",
       :base_image => "favicon_base.png",
@@ -43,6 +44,7 @@ Uses the following defaults:
 
     options = {
       :versions => [:apple_114, :apple_57, :apple, :fav_png, :fav_ico],
+      :custom_versions => {:apple_extreme_retina => {:filename => "apple-touch-icon-228x228-precomposed.png", :dimensions => "228x228", :format => "png"}}
       :root_dir => Rails.root,
       :input_dir => File.join(Rails.root, "app", "assets", "public"),
       :base_image => "favico.png",
@@ -52,7 +54,9 @@ Uses the following defaults:
     FaviconMaker::Generator.create_versions(options) do |filepath|
       Rails.logger.info "Created favicon: #{filepath}"
     end
+## Base Image Guideline
+Choose the version with the biggest dimension as your base image. Currently the size 114x114 for newer iOS devices marks the upper limit. So just create a PNG with 24 or 32 Bit color depth and 114x114 document size. Downscaling of images always works better than upscaling.
 
 ## Copyright
 
-Copyright (c) 2011 Andreas Follmann. See LICENSE for details.
+&copy; 2011 Andreas Follmann. See LICENSE for details.
