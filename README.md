@@ -39,7 +39,7 @@ In order to integrate the FaviconMaker effortless into your [Middleman](https://
           end
         end
 
-        before "deploy:update_code", "favicon:create_versions"
+        after "deploy:update_code", "favicon:create_versions"
 
 **Note: This snippet is untested but should work**
 
