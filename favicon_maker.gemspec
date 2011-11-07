@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
-require "version"
+require "favicon_maker/version"
 
 Gem::Specification.new do |s|
   s.name        = "favicon_maker"
