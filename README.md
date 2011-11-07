@@ -1,4 +1,4 @@
-FaviconMaker
+FaviconMaker [![Build Status](https://secure.travis-ci.org/[follmann]/[favicon_maker].png)](http://travis-ci.org/[follmann]/[favicon_maker])
 ============
 
 Tired of creating a gazillion different favicons to satisfy all kinds of devices and resolutions in different file formats? 

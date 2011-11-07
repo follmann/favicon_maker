@@ -20,4 +20,6 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
   
   s.add_runtime_dependency("mini_magick", ["~> 3.0"])
+  
+  s.add_development_dependency("rspec", ["~> 2.6.0"])
 end
