@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+
 $:.push File.expand_path("../lib", __FILE__)
 require "favicon_maker/version"
 
@@ -11,8 +12,6 @@ Gem::Specification.new do |s|
   s.homepage    = "https://github.com/follmann/favicon_maker"
   s.summary     = %q{Create favicon files in various sizes from a base image}
   s.description = %q{Create favicon files in various sizes from a base image}
-
-  s.rubyforge_project = "favicon_maker"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
