@@ -1,7 +1,7 @@
 FaviconMaker [![Build Status](https://secure.travis-ci.org/follmann/favicon_maker.png)](http://travis-ci.org/[follmann]/[favicon_maker])
 ============
 
-Tired of creating a gazillion different favicons to satisfy all kinds of devices and resolutions in different file formats? 
+Tired of creating a gazillion different favicons to satisfy all kinds of devices and resolutions in different file formats?
 
 I know I was, so I created FaviconMaker to ease the tedious process of creating multiple versions of your favicon.
 
@@ -47,13 +47,13 @@ In order to integrate the FaviconMaker effortless into your [Middleman](https://
 ### Simple
     require "rubygems"
     require "favicon_maker"
-    
+
     FaviconMaker::Generator.create_versions
 
 Uses the following defaults:
 
     options = {
-      :versions => [:apple_114, :apple_72, :apple_57, :apple_pre, :apple, :fav_png, :fav_ico],
+      :versions => [:apple_144, :apple_114, :apple_72, :apple_57, :apple_pre, :apple, :fav_png, :fav_ico],
       :custom_versions => {},
       :root_dir => File.dirname(__FILE__),
       :input_dir => "favicons",
@@ -62,11 +62,11 @@ Uses the following defaults:
       :copy => false
     }
 
-### Advanced 
+### Advanced
 (untested attempted Rails integration, using all available options. Could be used in a Rake task or Capistrano recipe)
 
     options = {
-      :versions => [:apple_114, :apple_57, :apple, :fav_png, :fav_ico],
+      :versions => [:apple_144, :apple_114, :apple_57, :apple, :fav_png, :fav_ico],
       :custom_versions => {:apple_extreme_retina => {:filename => "apple-touch-icon-228x228-precomposed.png", :dimensions => "228x228", :format => "png"}},
       :root_dir => Rails.root,
       :input_dir => File.join("app", "assets", "public"),
@@ -74,11 +74,11 @@ Uses the following defaults:
       :output_dir => "public",
       :copy => true
     }
-    
+
     FaviconMaker::Generator.create_versions(options) do |filepath|
       puts "Created favicon: #{filepath}"
     end
-    
+
 ## Base Image Guideline
 Choose the version with the biggest dimension as your base image. Currently the size 114x114 for newer iOS devices marks the upper limit. So just create a PNG with 24 or 32 Bit color depth and 114x114 document size. Downscaling of images always works better than upscaling.
 
