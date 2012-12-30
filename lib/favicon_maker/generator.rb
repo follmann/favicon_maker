@@ -47,6 +47,7 @@ module FaviconMaker
             end
           else
             image = MiniMagick::Image.open(input_path)
+            image.define "png:include-chunk=none,trns,gama"
             image.resize version[:dimensions]
             image.format version[:format]
             image.write output_path
