@@ -38,12 +38,12 @@ module FaviconMaker
           composed_path = File.join(base_path, version[:filename])
           output_path = File.join(options[:root_dir], options[:output_dir], version[:filename])
 
-          created = false
+          build_mode = nil
           # check for self composed icon file
           if File.exist?(composed_path)
             if options[:copy]
               FileUtils.cp composed_path, output_path
-              created = true
+              build_mode = :copied
             end
           else
             image = MiniMagick::Image.open(input_path)
@@ -51,11 +51,11 @@ module FaviconMaker
             image.resize version[:dimensions]
             image.format version[:format]
             image.write output_path
-            created = true
+            build_mode = :generated
           end
 
-          if block_given? && created
-            yield output_path
+          if block_given?
+            yield output_path, build_mode
           end
         end
       end
