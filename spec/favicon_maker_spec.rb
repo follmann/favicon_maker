@@ -16,7 +16,7 @@ describe FaviconMaker, '#create_versions' do
     @generated_dir = File.join(options[:root_dir], options[:output_dir])
     Dir.mkdir(@generated_dir)
 
-    FaviconMaker::Generator.create_versions(options) do |filepath|
+    FaviconMaker::Generator.create_versions(options) do |filepath, status|
       @versions << filepath
     end
   end
