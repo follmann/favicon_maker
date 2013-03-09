@@ -50,6 +50,7 @@ module FaviconMaker
             image.define "png:include-chunk=none,trns,gama"
             image.resize version[:dimensions]
             image.format version[:format]
+            image.flatten
             image.write output_path
             build_mode = :generated
           end

@@ -4,7 +4,7 @@ describe FaviconMaker, '#create_versions' do
   before(:all) do
     @versions = []
     options = {
-      :versions => [:apple_144, :apple_114, :apple_57, :apple, :fav_png, :fav_ico],
+      :versions => [:apple_144, :apple_114, :apple_72, :apple_57, :apple, :fav_png, :fav_ico],
       :custom_versions => {:apple_extreme_retina => {:filename => "apple-touch-icon-228x228-precomposed.png", :dimensions => "228x228", :format => "png"}},
       :root_dir => File.join(Dir.pwd, "spec"),
       :input_dir => "support",
@@ -21,11 +21,11 @@ describe FaviconMaker, '#create_versions' do
     end
   end
 
-  it "creates 7 different versions" do
-    @versions.size.should eql(7)
+  it "creates 8 different versions" do
+    @versions.size.should eql(8)
   end
 
-  it "creates 7 files" do
+  it "creates files for versions" do
     @versions.each do |file|
       File.exists?(file).should be_true
     end
