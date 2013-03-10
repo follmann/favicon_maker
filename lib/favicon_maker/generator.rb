@@ -12,7 +12,7 @@ module FaviconMaker
       :apple_pre => {:filename => "apple-touch-icon-precomposed.png", :dimensions => "57x57", :format => "png"},
       :apple => {:filename => "apple-touch-icon.png", :dimensions => "57x57", :format => "png"},
       :fav_png => {:filename => "favicon.png", :dimensions => "16x16", :format => "png"},
-      :fav_ico => {:filename => "favicon.ico", :dimensions => "16x16", :format => "ico"}
+      :fav_ico => {:filename => "favicon.ico", :dimensions => "128x128,64x64,32x32,24x24,16x16", :format => "ico"}
     }
 
     class << self
@@ -30,33 +30,44 @@ module FaviconMaker
 
         raise ArgumentError unless options[:versions].is_a? Array
         base_path = File.join(options[:root_dir], options[:input_dir])
-        input_path = File.join(base_path, options[:base_image])
+        input_file = File.join(base_path, options[:base_image])
 
         icon_versions = ICON_VERSIONS.merge(options[:custom_versions])
         (options[:versions] + options[:custom_versions].keys).uniq.each do |version|
           version = icon_versions[version]
           composed_path = File.join(base_path, version[:filename])
-          output_path = File.join(options[:root_dir], options[:output_dir], version[:filename])
+          output_path = File.join(options[:root_dir], options[:output_dir])
+          output_file = File.join(output_path, version[:filename])
 
           build_mode = nil
           # check for self composed icon file
           if File.exist?(composed_path)
             if options[:copy]
-              FileUtils.cp composed_path, output_path
+              FileUtils.cp composed_path, output_file
               build_mode = :copied
             end
-          else
-            image = MiniMagick::Image.open(input_path)
-            image.define "png:include-chunk=none,trns,gama"
-            image.resize version[:dimensions]
-            image.format version[:format]
-            image.colorspace 'RGB'
-            image.write output_path
+            image = MiniMagick::Image.open(input_file)
+            case version[:format].to_sym
+            when :png
+              image.define "png:include-chunk=none,trns,gama"
+              image.resize version[:dimensions]
+              image.colorspace 'RGB'
+              image.format "png"
+              image.strip
+              image.write output_file
+            when :ico
+              ico_cmd = "convert #{input_file} "
+              version[:dimensions].split(',').sort_by{|s| s.split('x')[0].to_i}.each do |size|
+                ico_cmd << "\\( -clone 0 -resize -colorspace RGB #{size} \\) "
+              end
+              ico_cmd << "-delete 0 -alpha off -colors 256 -verbose #{File.join(output_path, version[:filename])}"
+              puts `#{ico_cmd}`
+            end
             build_mode = :generated
           end
 
           if block_given?
-            yield output_path, build_mode
+            yield output_file, build_mode
           end
         end
       end
