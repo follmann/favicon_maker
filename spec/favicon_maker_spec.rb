@@ -14,6 +14,13 @@ describe FaviconMaker, '#create_versions' do
     }
 
     @generated_dir = File.join(options[:root_dir], options[:output_dir])
+
+    if Dir.exists?(@generated_dir)
+      Dir[File.join(@generated_dir, "*")].each do |file|
+        File.delete(file)
+      end
+      Dir.delete(@generated_dir)
+    end
     Dir.mkdir(@generated_dir)
 
     FaviconMaker::Generator.create_versions(options) do |filepath, status|
@@ -31,10 +38,4 @@ describe FaviconMaker, '#create_versions' do
     end
   end
 
-  after(:all) do
-    @versions.each do |file|
-      File.delete(file)
-    end
-    Dir.delete(@generated_dir)
-  end
 end
