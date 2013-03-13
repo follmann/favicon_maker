@@ -12,7 +12,7 @@ module FaviconMaker
       :apple_pre => {:filename => "apple-touch-icon-precomposed.png", :sizes => "57x57", :format => "png"},
       :apple => {:filename => "apple-touch-icon.png", :sizes => "57x57", :format => "png"},
       :fav_png => {:filename => "favicon.png", :sizes => "16x16", :format => "png"},
-      :fav_ico => {:filename => "favicon.ico", :sizes => "128x128,64x64,32x32,24x24,16x16", :format => "ico"}
+      :fav_ico => {:filename => "favicon.ico", :sizes => "64x64,32x32,24x24,16x16", :format => "ico"}
     }
 
     class << self
@@ -51,16 +51,15 @@ module FaviconMaker
             when :png
               image.define "png:include-chunk=none,trns,gama"
               image.resize sizes
-              image.colorspace 'RGB'
               image.format "png"
               image.strip
               image.write output_file
             when :ico
-              ico_cmd = "convert #{input_file} "
+              ico_cmd = "convert #{input_file} -colorspace RGB "
               sizes.split(',').sort_by{|s| s.split('x')[0].to_i}.each do |size|
-                ico_cmd << "\\( -clone 0 -resize #{size} -colorspace RGB \\) "
+                ico_cmd << "\\( -clone 0 -colors 256  -resize #{size} \\) "
               end
-              ico_cmd << "-delete 0 -alpha off -colors 256 -colorspace RGB -verbose #{File.join(output_path, version[:filename])}"
+              ico_cmd << "-delete 0 -colors 256 -colorspace sRGB #{File.join(output_path, version[:filename])}"
               puts `#{ico_cmd}`
             end
             build_mode = :generated
