@@ -42,11 +42,10 @@ module FaviconMaker
 
           build_mode = nil
           # check for self composed icon file
-          if File.exist?(composed_path)
-            if options[:copy]
-              FileUtils.cp composed_path, output_file
-              build_mode = :copied
-            end
+          if File.exist?(composed_path) && options[:copy]
+            FileUtils.cp composed_path, output_file
+            build_mode = :copied
+          else
             image = MiniMagick::Image.open(input_file)
             case version[:format].to_sym
             when :png
@@ -61,7 +60,7 @@ module FaviconMaker
               sizes.split(',').sort_by{|s| s.split('x')[0].to_i}.each do |size|
                 ico_cmd << "\\( -clone 0 -resize #{size} -colorspace RGB \\) "
               end
-              ico_cmd << "-delete 0 -alpha off -colors 256 -verbose #{File.join(output_path, version[:filename])}"
+              ico_cmd << "-delete 0 -alpha off -colors 256 -colorspace RGB -verbose #{File.join(output_path, version[:filename])}"
               puts `#{ico_cmd}`
             end
             build_mode = :generated
