@@ -15,9 +15,21 @@ module FaviconMaker
       :fav_ico => {:filename => "favicon.ico", :sizes => "64x64,32x32,24x24,16x16", :format => "ico"}
     }
 
+    IM_VERSION = (`convert --version`).scan(/ImageMagick (\d\.\d\.\d)/).flatten.first
+    RECENT_VERSION = "6.8.0"
+    COLORSPACE_MIN_VERSION = "6.7.5"
+
     class << self
 
       def create_versions(options={}, &block)
+
+        puts "FaviconMaker: WARNING! Your installed ImageMagick version #{IM_VERSION} is not up-to-date and might produce suboptimal output!" if IM_VERSION < RECENT_VERSION
+
+        switch_colorspace = IM_VERSION < COLORSPACE_MIN_VERSION
+
+        colorspace_conv = ["RGB", "sRGB"]
+        colorspace_conv.reverse! if switch_colorspace
+
         options = {
           :versions => ICON_VERSIONS.keys,
           :custom_versions => {},
@@ -46,20 +58,22 @@ module FaviconMaker
             FileUtils.cp composed_path, output_file
             build_mode = :copied
           else
-            image = MiniMagick::Image.open(input_file)
             case version[:format].to_sym
             when :png
+              image = MiniMagick::Image.open(input_file)
               image.define "png:include-chunk=none,trns,gama"
+              image.colorspace colorspace_conv.first
               image.resize sizes
               image.format "png"
               image.strip
+              image.colorspace colorspace_conv.last
               image.write output_file
             when :ico
-              ico_cmd = "convert #{input_file} -colorspace RGB "
+              ico_cmd = "convert #{input_file} -colorspace #{colorspace_conv.first} "
               sizes.split(',').sort_by{|s| s.split('x')[0].to_i}.each do |size|
-                ico_cmd << "\\( -clone 0 -colors 256  -resize #{size} \\) "
+                ico_cmd << "\\( -clone 0 -colors 256 -resize #{size} \\) "
               end
-              ico_cmd << "-delete 0 -colors 256 -colorspace sRGB #{File.join(output_path, version[:filename])}"
+              ico_cmd << "-delete 0 -colors 256 -colorspace #{colorspace_conv.last} #{File.join(output_path, version[:filename])}"
               puts `#{ico_cmd}`
             end
             build_mode = :generated
