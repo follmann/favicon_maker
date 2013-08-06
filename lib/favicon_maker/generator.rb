@@ -31,6 +31,8 @@ module FaviconMaker
         colorspace_conv = ["RGB", "sRGB"]
         colorspace_conv.reverse! if switch_colorspace
 
+        is_windows = (RbConfig::CONFIG['host_os'].match /mswin|mingw|cygwin/)
+
         options = {
           :versions => ICON_VERSIONS.keys,
           :custom_versions => {},
@@ -71,8 +73,9 @@ module FaviconMaker
               image.write output_file
             when :ico
               ico_cmd = "convert #{input_file} -colorspace #{colorspace_conv.first} "
+              escapes = "\\" unless is_windows
               sizes.split(',').sort_by{|s| s.split('x')[0].to_i}.each do |size|
-                ico_cmd << "\\( -clone 0 -colors 256 -resize #{size} \\) "
+                ico_cmd << "#{escapes}( -clone 0 -colors 256 -resize #{size} #{escapes}) "
               end
               ico_cmd << "-delete 0 -colors 256 -colorspace #{colorspace_conv.last} #{File.join(output_path, version[:filename])}"
               puts `#{ico_cmd}`
