@@ -6,6 +6,7 @@ module FaviconMaker
 
     ICON_VERSIONS = {
       :apple_144 => {:filename => "apple-touch-icon-144x144-precomposed.png", :sizes => "144x144", :format => "png"},
+      :apple_120 => {:filename => "apple-touch-icon-120x120-precomposed.png", :sizes => "120x120", :format => "png"},
       :apple_114 => {:filename => "apple-touch-icon-114x114-precomposed.png", :sizes => "114x114", :format => "png"},
       :apple_72 => {:filename => "apple-touch-icon-72x72-precomposed.png", :sizes => "72x72", :format => "png"},
       :apple_57 => {:filename => "apple-touch-icon-57x57-precomposed.png", :sizes => "57x57", :format => "png"},

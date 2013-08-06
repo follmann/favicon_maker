@@ -53,7 +53,7 @@ In order to integrate the FaviconMaker effortless into your [Middleman](https://
 Uses the following defaults:
 
     options = {
-      :versions => [:apple_144, :apple_114, :apple_72, :apple_57, :apple_pre, :apple, :fav_png, :fav_ico],
+      :versions => [:apple_144, :apple_120, :apple_114, :apple_72, :apple_57, :apple_pre, :apple, :fav_png, :fav_ico],
       :custom_versions => {},
       :root_dir => File.dirname(__FILE__),
       :input_dir => "favicons",
@@ -66,7 +66,7 @@ Uses the following defaults:
 (untested attempted Rails integration, using all available options. Could be used in a Rake task or Capistrano recipe)
 
     options = {
-      :versions => [:apple_144, :apple_114, :apple_57, :apple, :fav_png, :fav_ico],
+      :versions => [:apple_144, :apple_120, :apple_114, :apple_57, :apple, :fav_png, :fav_ico],
       :custom_versions => {:apple_extreme_retina => {:filename => "apple-touch-icon-228x228-precomposed.png", :dimensions => "228x228", :format => "png"}},
       :root_dir => Rails.root,
       :input_dir => File.join("app", "assets", "public"),
