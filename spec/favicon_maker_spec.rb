@@ -25,7 +25,7 @@ describe FaviconMaker, '#create_versions' do
   context "multi-color icon" do
     before do
       options = @options.merge({
-        :base_image => "favicon_base.png",
+        :base_image => "favicon base.png",
         :output_dir => "output1"
       })
 
