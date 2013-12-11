@@ -5,15 +5,24 @@ module FaviconMaker
   class Generator
 
     ICON_VERSIONS = {
+      :apple_152 => {:filename => "apple-touch-icon-152x152-precomposed.png", :sizes => "152x152", :format => "png"},
       :apple_144 => {:filename => "apple-touch-icon-144x144-precomposed.png", :sizes => "144x144", :format => "png"},
       :apple_120 => {:filename => "apple-touch-icon-120x120-precomposed.png", :sizes => "120x120", :format => "png"},
       :apple_114 => {:filename => "apple-touch-icon-114x114-precomposed.png", :sizes => "114x114", :format => "png"},
+      :apple_76 => {:filename => "apple-touch-icon-76x76-precomposed.png", :sizes => "76x76", :format => "png"},
       :apple_72 => {:filename => "apple-touch-icon-72x72-precomposed.png", :sizes => "72x72", :format => "png"},
+      :apple_60 => {:filename => "apple-touch-icon-60x60-precomposed.png", :sizes => "60x60", :format => "png"},
       :apple_57 => {:filename => "apple-touch-icon-57x57-precomposed.png", :sizes => "57x57", :format => "png"},
       :apple_pre => {:filename => "apple-touch-icon-precomposed.png", :sizes => "57x57", :format => "png"},
       :apple => {:filename => "apple-touch-icon.png", :sizes => "57x57", :format => "png"},
+      :fav_196 => {:filename => "favicon-196x196.png", :sizes => "196x196", :format => "png"},
+      :fav_160 => {:filename => "favicon-160x160.png", :sizes => "160x160", :format => "png"},
+      :fav_96 => {:filename => "favicon-96x96.png", :sizes => "96x96", :format => "png"},
+      :fav_32 => {:filename => "favicon-32x32.png", :sizes => "32x32", :format => "png"},
+      :fav_16 => {:filename => "favicon-16x16.png", :sizes => "16x16", :format => "png"},
       :fav_png => {:filename => "favicon.png", :sizes => "16x16", :format => "png"},
       :fav_ico => {:filename => "favicon.ico", :sizes => "64x64,32x32,24x24,16x16", :format => "ico"}
+      :mstile_144 => {:filename => "mstile-144x144", :sizes => "144x144", :format => "png"},
     }
 
     IM_VERSION = (`convert --version`).scan(/ImageMagick (\d\.\d\.\d)/).flatten.first
