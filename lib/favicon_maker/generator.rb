@@ -21,8 +21,8 @@ module FaviconMaker
       :fav_32 => {:filename => "favicon-32x32.png", :sizes => "32x32", :format => "png"},
       :fav_16 => {:filename => "favicon-16x16.png", :sizes => "16x16", :format => "png"},
       :fav_png => {:filename => "favicon.png", :sizes => "16x16", :format => "png"},
-      :fav_ico => {:filename => "favicon.ico", :sizes => "64x64,32x32,24x24,16x16", :format => "ico"}
-      :mstile_144 => {:filename => "mstile-144x144", :sizes => "144x144", :format => "png"},
+      :fav_ico => {:filename => "favicon.ico", :sizes => "64x64,32x32,24x24,16x16", :format => "ico"},
+      :mstile_144 => {:filename => "mstile-144x144", :sizes => "144x144", :format => "png"}
     }
 
     IM_VERSION = (`convert --version`).scan(/ImageMagick (\d\.\d\.\d)/).flatten.first
