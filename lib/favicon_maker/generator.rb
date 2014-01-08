@@ -1,6 +1,7 @@
 module FaviconMaker
   require "mini_magick"
   require 'fileutils'
+  require 'pathname'
 
   class Generator
 
@@ -52,7 +53,11 @@ module FaviconMaker
           version = icon_versions[version]
           sizes = version[:dimensions] || version[:sizes]
           composed_path = File.join(base_path, version[:filename])
-          output_path = File.join(options[:root_dir], options[:output_dir])
+          output_path = if Pathname.new(options[:root_dir]).absolute?
+            options[:output_dir]
+          else
+            File.join(options[:root_dir], options[:output_dir])
+          end
           output_file = File.join(output_path, version[:filename])
 
           build_mode = nil
