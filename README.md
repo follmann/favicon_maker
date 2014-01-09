@@ -53,7 +53,25 @@ In order to integrate the FaviconMaker effortless into your [Middleman](https://
 Uses the following defaults:
 
     options = {
-      :versions => [:apple_152, :apple_144, :apple_120, :apple_114, :apple_76, :apple_72, :apple_60, :apple_57, :apple, :fav_196, :fav_160, :fav_96, :fav_32, :fav_16, :fav_png, :fav_ico, :mstile_144],
+      :versions => [
+        :apple_152, 
+        :apple_144,
+        :apple_120,
+        :apple_114,
+        :apple_76,
+        :apple_72,
+        :apple_60,
+        :apple_57,
+        :apple,
+        :fav_196,
+        :fav_160,
+        :fav_96,
+        :fav_32,
+        :fav_16,
+        :fav_png,
+        :fav_ico,
+        :mstile_144
+      ],
       :custom_versions => {},
       :root_dir => File.dirname(__FILE__),
       :input_dir => "favicons",
@@ -66,8 +84,32 @@ Uses the following defaults:
 (untested attempted Rails integration, using all available options. Could be used in a Rake task or Capistrano recipe)
 
     options = {
-      :versions => [:apple_152, :apple_144, :apple_120, :apple_114, :apple_76, :apple_72, :apple_60, :apple_57, :apple, :fav_196, :fav_160, :fav_96, :fav_32, :fav_16, :fav_png, :fav_ico, :mstile_144],
-      :custom_versions => {:apple_extreme_retina => {:filename => "apple-touch-icon-228x228-precomposed.png", :dimensions => "228x228", :format => "png"}},
+      :versions => [
+        :apple_152,
+        :apple_144,
+        :apple_120,
+        :apple_114,
+        :apple_76,
+        :apple_72,
+        :apple_60,
+        :apple_57,
+        :apple,
+        :fav_196,
+        :fav_160,
+        :fav_96,
+        :fav_32,
+        :fav_16,
+        :fav_png,
+        :fav_ico,
+        :mstile_144
+      ],
+      :custom_versions => {
+        :apple_extreme_retina => {
+          :filename => "apple-touch-icon-228x228-precomposed.png",
+          :dimensions => "228x228",
+          :format => "png"
+        }
+      },
       :root_dir => Rails.root,
       :input_dir => File.join("app", "assets", "public"),
       :base_image => "favicon.png",
