@@ -1,6 +1,7 @@
 module FaviconMaker
   require "mini_magick"
   require 'fileutils'
+  require 'pathname'
 
   class Generator
 
@@ -61,7 +62,11 @@ module FaviconMaker
           version = icon_versions[version]
           sizes = version[:dimensions] || version[:sizes]
           composed_path = File.join(base_path, version[:filename])
-          output_path = File.join(options[:root_dir], options[:output_dir])
+          output_path = if Pathname.new(options[:output_dir]).absolute?
+            options[:output_dir]
+          else
+            File.join(options[:root_dir], options[:output_dir])
+          end
           output_file = File.join(output_path, version[:filename])
 
           build_mode = nil
@@ -84,9 +89,9 @@ module FaviconMaker
               ico_cmd = "convert \"#{input_file}\" -colorspace #{colorspace_conv.first} "
               escapes = "\\" unless is_windows
               sizes.split(',').sort_by{|s| s.split('x')[0].to_i}.each do |size|
-                ico_cmd << "#{escapes}( -clone 0 -colors 256 -resize #{size} #{escapes}) "
+                ico_cmd << "#{escapes}( -clone 0 -resize #{size} #{escapes}) "
               end
-              ico_cmd << "-delete 0 -colors 256 -colorspace #{colorspace_conv.last} \"#{File.join(output_path, version[:filename])}\""
+              ico_cmd << "-delete 0 -colorspace #{colorspace_conv.last} \"#{File.join(output_path, version[:filename])}\""
               puts `#{ico_cmd}`
             end
             build_mode = :generated
