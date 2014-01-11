@@ -10,8 +10,8 @@ Gem::Specification.new do |s|
   s.authors     = ["Andreas Follmann"]
   #s.email       = [""]
   s.homepage    = "https://github.com/follmann/favicon_maker"
-  s.summary     = %q{Create favicon files in various sizes from a base image}
-  s.description = %q{Create favicon files in various sizes from a base image}
+  s.summary     = %q{Create favicon files in various sizes from one or multiple base images}
+  s.description = %q{Create favicon files in various sizes from one or multiple base images}
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
@@ -19,6 +19,8 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_runtime_dependency("mini_magick", ["~> 3.5"])
+  s.add_runtime_dependency("docile", ["~> 1.1.2"])
 
-  s.add_development_dependency("rspec", ["~> 2.6.0"])
+  s.add_development_dependency("rspec", ["~> 2.14.1"])
+  s.add_development_dependency("guard-rspec")
 end
