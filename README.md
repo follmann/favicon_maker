@@ -4,9 +4,7 @@ FaviconMaker [![Build Status](https://secure.travis-ci.org/follmann/favicon_make
 
 Tired of creating a gazillion different favicons to satisfy all kinds of devices and resolutions in different file formats?
 
-I know I was, so I created FaviconMaker to ease the tedious process of creating multiple versions of your favicon.
-
-The basic idea is to have a template image file as source for all the different sizes and or formats (png/ico). From v1.x on it is possible to use multiple template files 
+I know I was, so I created FaviconMaker to ease the tedious process of creating multiple versions of your favicon. The basic idea is to have a template image file as source for all the different sizes and or formats (png/ico). From v1.x on it is possible to use multiple template files.
 
 ## Installation
 Using Bundler
@@ -18,7 +16,7 @@ gem "favicon_maker"
 ### Definition
 * ```setup``` takes the directory config
 * ```from```  defines the template to be used
-* ```icon```  needs at least a filename. Usually the size and the file format are encoded in that name e.g. ```apple-touch-icon-152x152-precomposed.png```, if that is the case FaviconMaker tries to extract that information. It takes an options hash as the second argument where ```size:  "16x16"``` and ```format: :ico``` can be specified. Only .ico and .png are supported. The options passed take precedence over information extracted from the filename.
+* ```icon```  needs at least a filename. Usually the size and the file format are encoded in that name e.g. ```apple-touch-icon-152x152-precomposed.png```, if that is the case FaviconMaker tries to extract that information. It takes an options hash as the second argument where ```size``` e.g. "16x16" and ```format``` e.g. :ico can be specified. Only .ico and .png are supported. The options passed take precedence over information extracted from the filename.
 * ```each_icon``` is called for every generated file with the fully qualified output filepath
 
 ### Complete example:
