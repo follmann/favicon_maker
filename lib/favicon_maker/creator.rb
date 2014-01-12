@@ -84,7 +84,7 @@ module FaviconMaker
     end
 
     def print_image_magick_ancient_version_warning
-      puts "FaviconMaker: WARNING! Your installed ImageMagick version #{IM_VERSION} is not up-to-date and might produce suboptimal output!"
+      puts "FaviconMaker: WARNING! Your installed ImageMagick version #{RECENT_IM_VERSION} is not up-to-date and might produce suboptimal output!"
     end
 
 
