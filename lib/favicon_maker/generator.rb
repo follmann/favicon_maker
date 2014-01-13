@@ -10,7 +10,7 @@ module FaviconMaker
   end
 
   class Generator
-    extend Forwardable
+    extend ::Forwardable
 
     attr_accessor :config
     attr_accessor :creators
