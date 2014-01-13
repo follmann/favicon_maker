@@ -1,3 +1,4 @@
+require 'forwardable'
 require 'docile'
 
 module FaviconMaker
