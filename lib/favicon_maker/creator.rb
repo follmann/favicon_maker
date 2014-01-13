@@ -71,6 +71,11 @@ module FaviconMaker
         image.format "png"
         image.strip
         image.colorspace colorspace_out
+        image.combine_options do |c|
+          c.background "none"
+          c.gravity "center"
+          c.extent size
+        end
         image.write output_file_path
       when :ico
         ico_cmd = "convert \"#{template_file_path}\" -colorspace #{colorspace_in} "
