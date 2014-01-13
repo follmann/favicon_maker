@@ -41,12 +41,26 @@ module FaviconMaker
       size    = options[:size]    || extract_size(output_filename)
       output_file_path = File.join(output_path, output_filename)
 
+      validate_input(format, size)
+
       generate_file(template_file_path, output_file_path, size, format)
 
       finished_block.call(output_file_path, template_file_path) if finished_block
     end
 
     private
+
+    def validate_input(format, size)
+      unless InputValidator.valid_format?(format)
+        raise ArgumentError, "FaviconMaker: Unknown icon format."
+      end
+
+      format_multi_res = InputValidator.format_multi_resolution?(format)
+
+      unless InputValidator.valid_size?(size, format_multi_res)
+        raise ArgumentError, "FaviconMaker: Size definition can't be decoded."
+      end
+    end
 
     def fetch_image_magick_version
       version = (`convert --version`).scan(/ImageMagick (\d\.\d\.\d)/).flatten.first
@@ -68,14 +82,14 @@ module FaviconMaker
         image.define "png:include-chunk=none,trns,gama"
         image.colorspace colorspace_in
         image.resize size
-        image.format "png"
-        image.strip
-        image.colorspace colorspace_out
         image.combine_options do |c|
           c.background "none"
           c.gravity "center"
           c.extent size
-        end
+        end unless InputValidator.size_square?(size)
+        image.format "png"
+        image.strip
+        image.colorspace colorspace_out
         image.write output_file_path
       when :ico
         ico_cmd = "convert \"#{template_file_path}\" -colorspace #{colorspace_in} "

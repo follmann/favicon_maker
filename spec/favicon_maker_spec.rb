@@ -9,6 +9,8 @@ describe FaviconMaker, '#create_versions' do
 
   let(:output_path) { File.join(absolute_root_dir, relative_output_dir) }
 
+  let(:total_count) { 19 }
+
   def cleanup(output_dir)
     if Dir.exists?(output_dir)
       Dir[File.join(output_dir, "*")].each do |file|
@@ -60,6 +62,7 @@ describe FaviconMaker, '#create_versions' do
           icon "favicon.png",                             size:  "16x16"
           icon "favicon.ico",                             size:  "64x64,32x32,24x24,16x16"
           icon "mstile-144x144",                          format: "png"
+          icon "mstile-310x150",                          format: "png"
         end
 
         each_icon do |filepath, template_filepath|
@@ -70,9 +73,9 @@ describe FaviconMaker, '#create_versions' do
       return files, template_files
     end
 
-    it "creates 18 files" do
+    it "creates multiple files" do
       files, template_files = subject
-      expect(files.size).to eql(18)
+      expect(files.size).to eql(total_count)
       files.each do |file|
         expect(File.exists?(file)).to be_true
       end
@@ -123,6 +126,7 @@ describe FaviconMaker, '#create_versions' do
           icon "favicon.png",     size:  "16x16"
           icon "favicon.ico",     size:  "64x64,32x32,24x24,16x16"
           icon "mstile-144x144",  format: "png"
+          icon "mstile-310x150",  format: "png"
         end
 
         each_icon do |filepath|
@@ -132,9 +136,9 @@ describe FaviconMaker, '#create_versions' do
       files
     end
 
-    it "creates 18 files" do
+    it "creates multiple files" do
       files = subject
-      expect(files.size).to eql(18)
+      expect(files.size).to eql(total_count)
       files.each do |file|
         expect(File.exists?(file)).to be_true
       end
