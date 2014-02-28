@@ -92,7 +92,7 @@ module FaviconMaker
         image.colorspace colorspace_out
         image.write output_file_path
       when :ico
-        ico_cmd = "convert \"#{template_file_path}\" -colorspace #{colorspace_in} "
+        ico_cmd = "convert \"#{template_file_path}\" -quiet -colorspace #{colorspace_in} "
         escapes = "\\" unless on_windows?
         size.split(',').sort_by{|s| s.split('x')[0].to_i}.each do |s|
           ico_cmd << "#{escapes}( -clone 0 -resize #{s} #{escapes}) "
