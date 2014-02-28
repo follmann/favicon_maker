@@ -83,7 +83,7 @@ describe FaviconMaker, '#create_versions' do
     end
 
     after do
-      cleanup(output_path)
+      # cleanup(output_path)
     end
 
   end
@@ -145,7 +145,7 @@ describe FaviconMaker, '#create_versions' do
     end
 
     after do
-      cleanup(output_path)
+      # cleanup(output_path)
     end
   end
 end
