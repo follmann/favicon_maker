@@ -26,8 +26,8 @@ module FaviconMaker
       @config = Docile.dsl_eval(MakerConfig.new, &block)
     end
 
-    def from(template_filename, &block)
-      creators[template_filename] = block
+    def from(template_filename, options=[], &block)
+      creators[template_filename] = [options, block]
     end
 
     def each_icon(&block)
@@ -35,9 +35,10 @@ module FaviconMaker
     end
 
     def start
-      creators.each do |template_filename, creator_block|
+      creators.each do |template_filename, options_and_block|
         template_file = File.join(template_dir, template_filename)
-        Docile.dsl_eval(Creator.new(template_file, output_dir, finished_block), &creator_block)
+        options, creator_block = *options_and_block
+        Docile.dsl_eval(Creator.new(template_file, output_dir, options, finished_block), &creator_block)
       end
     end
   end

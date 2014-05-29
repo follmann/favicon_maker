@@ -1,4 +1,4 @@
-require "mini_magick"
+require "image_sorcery"
 require 'fileutils'
 
 module FaviconMaker
@@ -9,30 +9,21 @@ module FaviconMaker
 
     attr_accessor :template_file_path
     attr_accessor :output_path
-    attr_accessor :colorspace_in
-    attr_accessor :colorspace_out
+    attr_accessor :options
     attr_accessor :finished_block
 
-    def initialize(template_file_path, output_path, finished_block)
+    def initialize(template_file_path, output_path, options, finished_block)
       @template_file_path = template_file_path
       @output_path        = output_path
+      @options            = options
       @finished_block     = finished_block
 
       im_version = fetch_image_magick_version
 
       if im_version
         print_image_magick_ancient_version_warning  if im_version < RECENT_IM_VERSION
-        if im_version < COLORSPACE_MIN_IM_VERSION
-          @colorspace_in   = "sRGB"
-          @colorspace_out  = "RGB"
-        else
-          @colorspace_in   = "RGB"
-          @colorspace_out  = "sRGB"
-        end
       else
         print_image_magick_no_version_warning
-        @colorspace_in   = "RGB"
-        @colorspace_out  = "sRGB"
       end
     end
 
@@ -78,28 +69,59 @@ module FaviconMaker
     def generate_file(template_file_path, output_file_path, size, format)
       case format.to_sym
       when :png
-        image = MiniMagick::Image.open(template_file_path)
-        image.define "png:include-chunk=none,trns,gama"
-        image.colorspace colorspace_in
-        image.resize size
-        image.combine_options do |c|
-          c.background "none"
-          c.gravity "center"
-          c.extent size
-        end unless InputValidator.size_square?(size)
-        image.format "png"
-        image.strip
-        image.colorspace colorspace_out
-        image.write output_file_path
-      when :ico
-        ico_cmd = "convert \"#{template_file_path}\" -quiet -colorspace #{colorspace_in} "
-        escapes = "\\" unless on_windows?
-        size.split(',').sort_by{|s| s.split('x')[0].to_i}.each do |s|
-          ico_cmd << "#{escapes}( -clone 0 -resize #{s} #{escapes}) "
+        convert_settings = [
+          [ :define,      "png:include-chunk=none,trns,gama"  ],
+          [ :format,      "png"                               ],
+          [ :resize,      size                                ],
+          [ :gravity,     "center"                            ],
+          [ :background,  "none"                              ],
+          [ :extent,      size                                ],
+        ]
+
+        convert_settings += @options
+
+        run_convert(output_file_path, format) do |ico_cmd|
+          ico_cmd << "\"#{template_file_path}\" #{options_to_args(convert_settings)}"
         end
-        ico_cmd << "-delete 0 -colorspace #{colorspace_out} \"#{output_file_path}\""
-        print `#{ico_cmd}`
+      when :ico
+        convert_settings = [
+          [ :quiet,       nil                                 ],
+        ]
+
+        convert_settings += @options
+
+        center_settings = [
+          [ :gravity,     "center"                            ],
+          [ :background,  "none"                              ],
+        ]
+
+        run_convert(output_file_path, format) do |ico_cmd|
+          ico_cmd << "\"#{template_file_path}\" #{options_to_args(convert_settings)}"
+          escapes = "\\" unless on_windows?
+          size.split(',').sort_by{|s| s.split('x')[0].to_i}.each do |s|
+            ico_cmd << "#{escapes}( -clone 0 -resize #{s}  #{options_to_args(center_settings)} -extent #{s} #{escapes}) "
+          end
+          ico_cmd << "-delete 0"
+        end
       end
+    end
+
+    def run_convert(output_file_path, format, &block)
+      ico_cmd = "convert -background none "
+      ico_cmd = yield(ico_cmd) if block_given?
+      ico_cmd << " #{format}:\"#{output_file_path}\""
+      print `#{ico_cmd}`
+    end
+
+    def options_to_args(options)
+      return nil if options.nil?
+      options.map { |k,v|
+        if [ :xc, :null ].include?(k)
+          "#{k}:#{v}"
+        else
+          "-#{k} #{v}"
+        end
+      }.join(' ')
     end
 
     def print_image_magick_ancient_version_warning
