@@ -1,4 +1,3 @@
-require "image_sorcery"
 require 'fileutils'
 
 module FaviconMaker
@@ -78,25 +77,18 @@ module FaviconMaker
           [ :extent,      size                                ],
         ]
 
-        convert_settings += @options
-
-        run_convert(output_file_path, format) do |ico_cmd|
-          ico_cmd << "\"#{template_file_path}\" #{options_to_args(convert_settings)}"
-        end
+        run_convert(template_file_path, convert_settings, output_file_path, format)
       when :ico
         convert_settings = [
           [ :quiet,       nil                                 ],
         ]
-
-        convert_settings += @options
 
         center_settings = [
           [ :gravity,     "center"                            ],
           [ :background,  "none"                              ],
         ]
 
-        run_convert(output_file_path, format) do |ico_cmd|
-          ico_cmd << "\"#{template_file_path}\" #{options_to_args(convert_settings)}"
+        run_convert(template_file_path, convert_settings, output_file_path, format) do |ico_cmd|
           escapes = "\\" unless on_windows?
           size.split(',').sort_by{|s| s.split('x')[0].to_i}.each do |s|
             ico_cmd << "#{escapes}( -clone 0 -resize #{s}  #{options_to_args(center_settings)} -extent #{s} #{escapes}) "
@@ -106,8 +98,9 @@ module FaviconMaker
       end
     end
 
-    def run_convert(output_file_path, format, &block)
-      ico_cmd = "convert -background none "
+    def run_convert(template_file_path, convert_settings, output_file_path, format, &block)
+      ico_cmd = "convert -background none #{@options} "
+      ico_cmd << "\"#{template_file_path}\" #{options_to_args(convert_settings)} "
       ico_cmd = yield(ico_cmd) if block_given?
       ico_cmd << " #{format}:\"#{output_file_path}\""
       print `#{ico_cmd}`

@@ -26,7 +26,7 @@ module FaviconMaker
       @config = Docile.dsl_eval(MakerConfig.new, &block)
     end
 
-    def from(template_filename, options=[], &block)
+    def from(template_filename, options="", &block)
       creators[template_filename] = [options, block]
     end
 

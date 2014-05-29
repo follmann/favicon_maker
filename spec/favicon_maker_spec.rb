@@ -234,7 +234,7 @@ describe FaviconMaker, '#create_versions' do
           output_dir    output_path
         end
 
-        from "TRS_Logo_RGB_solo.svg" do
+        from "TRS_Logo_RGB_solo.svg", '-background grey' do
           icon "apple-touch-icon-152x152-precomposed.png"
           icon "apple-touch-icon-144x144-precomposed.png"
           icon "apple-touch-icon-120x120-precomposed.png"
