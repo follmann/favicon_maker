@@ -1,5 +1,6 @@
-FaviconMaker [![Build Status](https://secure.travis-ci.org/follmann/favicon_maker.png)](http://travis-ci.org/follmann/favicon_maker) [![Code Climate](https://codeclimate.com/github/follmann/favicon_maker.png)](https://codeclimate.com/github/follmann/favicon_maker)
-============
+# FaviconMaker 
+[![Gem Version](https://badge.fury.io/rb/favicon_maker.svg)](http://badge.fury.io/rb/favicon_maker)
+[![Build Status](https://secure.travis-ci.org/follmann/favicon_maker.png)](http://travis-ci.org/follmann/favicon_maker) [![Code Climate](https://codeclimate.com/github/follmann/favicon_maker.png)](https://codeclimate.com/github/follmann/favicon_maker)
 
 Tired of creating a gazillion different favicons to satisfy all kinds of devices and resolutions in different file formats?
 
