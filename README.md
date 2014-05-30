@@ -69,7 +69,7 @@ end
 In order to integrate the FaviconMaker effortless into your [Middleman](https://github.com/tdreyno/middleman) project use the following gem: [middleman-favicon-maker](https://github.com/follmann/middleman-favicon-maker) with version v3.5 or higher
 
 ## Template Image Guideline
-Choose the version with the biggest dimension as your base image. Currently the size 152x152 for newer iOS devices marks the upper limit. So just create a PNG with 24 or 32 Bit color depth and 152x152 document size. Downscaling of images always works better than upscaling. Use more than one template file to improve lower resolutions.
+Choose the version with the biggest dimension as your base image. Currently the size 152x152 for newer iOS devices marks the upper limit. So just create a PNG with 24 or 32 Bit color depth and 152x152 document size or a vector image SVG (since v1.2). Downscaling of images always works better than upscaling. Use more than one template file to improve lower resolutions.
 
 ## Contributing
 1. Fork it
