@@ -1,7 +1,7 @@
   module FaviconMaker
     MAJOR = 1
-    MINOR = 2
-    PATCH = 1
+    MINOR = 3
+    PATCH = nil
     BUILD = nil
 
     VERSION = [MAJOR, MINOR, PATCH, BUILD].compact.join('.')

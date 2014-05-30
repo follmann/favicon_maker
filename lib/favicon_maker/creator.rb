@@ -4,7 +4,6 @@ module FaviconMaker
 
   class Creator
     RECENT_IM_VERSION         = "6.8.0"
-    COLORSPACE_MIN_IM_VERSION = "6.7.5"
 
     attr_accessor :template_file_path
     attr_accessor :output_path
@@ -16,6 +15,7 @@ module FaviconMaker
       @output_path        = output_path
       @options            = options
       @finished_block     = finished_block
+      @command_set        = []
 
       im_version = fetch_image_magick_version
 
@@ -33,9 +33,14 @@ module FaviconMaker
 
       validate_input(format, size)
 
-      generate_file(template_file_path, output_file_path, size, format)
+      @command_set << [ generate_command(template_file_path, output_file_path, size, format), output_file_path, template_file_path ]
+    end
 
-      finished_block.call(output_file_path, template_file_path) if finished_block
+    def run
+      @command_set.map do |cmd, output_file_path, template_file_path|
+        `#{cmd}`
+        finished_block.call(output_file_path, template_file_path) if finished_block
+      end
     end
 
     private
@@ -65,56 +70,12 @@ module FaviconMaker
       matches[1] if matches
     end
 
-    def generate_file(template_file_path, output_file_path, size, format)
+    def generate_command(template_file_path, output_file_path, size, format)
+      args = template_file_path, output_file_path, size, @options
       case format.to_sym
-      when :png
-        convert_settings = [
-          [ :define,      "png:include-chunk=none,trns,gama"  ],
-          [ :format,      "png"                               ],
-          [ :resize,      size                                ],
-          [ :gravity,     "center"                            ],
-          [ :background,  "none"                              ],
-          [ :extent,      size                                ],
-        ]
-
-        run_convert(template_file_path, convert_settings, output_file_path, format)
-      when :ico
-        convert_settings = [
-          [ :quiet,       nil                                 ],
-        ]
-
-        center_settings = [
-          [ :gravity,     "center"                            ],
-          [ :background,  "none"                              ],
-        ]
-
-        run_convert(template_file_path, convert_settings, output_file_path, format) do |ico_cmd|
-          escapes = "\\" unless on_windows?
-          size.split(',').sort_by{|s| s.split('x')[0].to_i}.each do |s|
-            ico_cmd << "#{escapes}( -clone 0 -resize #{s}  #{options_to_args(center_settings)} -extent #{s} #{escapes}) "
-          end
-          ico_cmd << "-delete 0"
-        end
-      end
-    end
-
-    def run_convert(template_file_path, convert_settings, output_file_path, format, &block)
-      ico_cmd = "convert -background none #{@options} "
-      ico_cmd << "\"#{template_file_path}\" #{options_to_args(convert_settings)} "
-      ico_cmd = yield(ico_cmd) if block_given?
-      ico_cmd << " #{format}:\"#{output_file_path}\""
-      print `#{ico_cmd}`
-    end
-
-    def options_to_args(options)
-      return nil if options.nil?
-      options.map { |k,v|
-        if [ :xc, :null ].include?(k)
-          "#{k}:#{v}"
-        else
-          "-#{k} #{v}"
-        end
-      }.join(' ')
+      when :png then PngCommand.new(*args)
+      when :ico then IcoCommand.new(*args)
+      end.to_s
     end
 
     def print_image_magick_ancient_version_warning
@@ -124,10 +85,6 @@ module FaviconMaker
 
     def print_image_magick_no_version_warning
       puts "FaviconMaker: WARNING! The version of your installed ImageMagick could not be detected!"
-    end
-
-    def on_windows?
-      (RbConfig::CONFIG['host_os'].match /mswin|mingw|cygwin/)
     end
 
   end

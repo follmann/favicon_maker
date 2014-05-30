@@ -38,7 +38,7 @@ module FaviconMaker
       creators.each do |template_filename, options_and_block|
         template_file = File.join(template_dir, template_filename)
         options, creator_block = *options_and_block
-        Docile.dsl_eval(Creator.new(template_file, output_dir, options, finished_block), &creator_block)
+        Docile.dsl_eval(Creator.new(template_file, output_dir, options, finished_block), &creator_block).run
       end
     end
   end
